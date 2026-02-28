@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Edit Student{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+
+        <!-- Back button -->
+        <a href="/" class="btn btn-outline-secondary mb-3">
+            <i class="bi bi-arrow-left me-2"></i>Back to All Students
+        </a>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <i class="bi bi-pencil-square me-2"></i>Edit Student #{{ student.id }} — {{ student.name }}
+            </div>
+            <div class="card-body">
+                <!--
+                    The form fields are pre-filled with the current values.
+                    value="{{ student.name }}" → shows existing data
+                    action="/update/{{ student.id }}" → Controller knows which student to update
+                -->
+                <form action="/update/{{ student.id }}" method="POST">
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label fw-semibold">
+                            Full Name <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="name"
+                               name="name" value="{{ student.name }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-semibold">
+                            Email <span class="text-danger">*</span>
+                        </label>
+                        <input type="email" class="form-control" id="email"
+                               name="email" value="{{ student.email }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="department" class="form-label fw-semibold">Department</label>
+                        <select class="form-select" id="department" name="department">
+                            {% for dept in ['Computer Science', 'Electrical Engineering', 'Mathematics', 'Physics', 'Chemistry', 'Biology'] %}
+                                <option value="{{ dept }}" {% if student.department == dept %}selected{% endif %}>
+                                    {{ dept }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="gpa" class="form-label fw-semibold">
+                            GPA <span class="text-danger">*</span>
+                        </label>
+                        <input type="number" class="form-control" id="gpa"
+                               name="gpa" value="{{ student.gpa }}"
+                               min="0" max="4" step="0.01" required>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary flex-fill">
+                            <i class="bi bi-save me-2"></i>Save Changes
+                        </button>
+                        <a href="/" class="btn btn-outline-secondary flex-fill">
+                            <i class="bi bi-x-lg me-2"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

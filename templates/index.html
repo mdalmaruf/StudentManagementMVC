@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════
+     SECTION 1: DASHBOARD STATS
+     The Controller passes 'stats' dictionary to this template.
+     We just display the numbers — no calculations here.
+     ═══════════════════════════════════════ -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="card text-center border-0 shadow-sm stat-card">
+            <div class="card-body">
+                <i class="bi bi-people-fill stat-icon text-primary"></i>
+                <div class="stat-number text-primary">{{ stats.total }}</div>
+                <div class="stat-label">Total Students</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card text-center border-0 shadow-sm stat-card">
+            <div class="card-body">
+                <i class="bi bi-graph-up stat-icon text-success"></i>
+                <div class="stat-number text-success">{{ stats.avg_gpa }}</div>
+                <div class="stat-label">Average GPA</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card text-center border-0 shadow-sm stat-card">
+            <div class="card-body">
+                <i class="bi bi-trophy-fill stat-icon text-warning"></i>
+                <div class="stat-number text-warning">{{ stats.honor_roll }}</div>
+                <div class="stat-label">Honor Roll</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card text-center border-0 shadow-sm stat-card">
+            <div class="card-body">
+                <i class="bi bi-building stat-icon text-info"></i>
+                <div class="stat-number text-info">{{ stats.departments|length }}</div>
+                <div class="stat-label">Departments</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+
+    <!-- ═══════════════════════════════════════
+         SECTION 2: ADD STUDENT FORM (Left Side)
+         This form sends data to the Controller via POST.
+         action="/add" → tells Flask which route handles this
+         method="POST" → sends data in request body (not URL)
+         ═══════════════════════════════════════ -->
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <i class="bi bi-person-plus-fill me-2"></i>Add New Student
+            </div>
+            <div class="card-body">
+                <form action="/add" method="POST">
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label fw-semibold">
+                            Full Name <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="name"
+                               name="name" placeholder="e.g., Jane Smith" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-semibold">
+                            Email <span class="text-danger">*</span>
+                        </label>
+                        <input type="email" class="form-control" id="email"
+                               name="email" placeholder="e.g., jane@university.ca" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="department" class="form-label fw-semibold">Department</label>
+                        <select class="form-select" id="department" name="department">
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Electrical Engineering">Electrical Engineering</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Biology">Biology</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="gpa" class="form-label fw-semibold">
+                            GPA <span class="text-danger">*</span>
+                        </label>
+                        <input type="number" class="form-control" id="gpa"
+                               name="gpa" placeholder="e.g., 3.75"
+                               min="0" max="4" step="0.01" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-dark w-100">
+                        <i class="bi bi-plus-lg me-2"></i>Add Student
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         SECTION 3: STUDENT TABLE (Right Side)
+         The Controller passes 'students' list to this template.
+         We use a Jinja2 for-loop to render one row per student.
+         ═══════════════════════════════════════ -->
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-table me-2"></i>Student Records</span>
+                <span class="badge bg-light text-dark">{{ students|length }} students</span>
+            </div>
+            <div class="card-body p-0">
+
+                {% if students|length == 0 %}
+                    <!-- Empty state -->
+                    <div class="text-center py-5 text-muted">
+                        <i class="bi bi-inbox" style="font-size: 3rem;"></i>
+                        <p class="mt-2">No students yet. Add one using the form!</p>
+                    </div>
+                {% else %}
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0 align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Department</th>
+                                    <th>GPA</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--
+                                    JINJA2 FOR LOOP:
+                                    'students' is a list of database rows passed by the Controller.
+                                    Each 'student' is a dictionary-like row with keys: id, name, email, etc.
+                                -->
+                                {% for student in students %}
+                                <tr>
+                                    <td class="text-muted">{{ student.id }}</td>
+                                    <td>
+                                        <strong>{{ student.name }}</strong>
+                                        {% if student.gpa >= 3.5 %}
+                                            <span class="badge bg-warning text-dark ms-1" title="Honor Roll">⭐</span>
+                                        {% endif %}
+                                    </td>
+                                    <td><small class="text-muted">{{ student.email }}</small></td>
+                                    <td>
+                                        <span class="badge
+                                            {% if student.department == 'Computer Science' %}bg-primary
+                                            {% elif student.department == 'Electrical Engineering' %}bg-info text-dark
+                                            {% elif student.department == 'Mathematics' %}bg-success
+                                            {% elif student.department == 'Physics' %}bg-secondary
+                                            {% else %}bg-dark
+                                            {% endif %}">
+                                            {{ student.department }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <!--
+                                            GPA Color Coding:
+                                            3.5+ = green (honor roll)
+                                            3.0-3.49 = blue (good)
+                                            2.0-2.99 = yellow (warning)
+                                            below 2.0 = red (probation)
+                                        -->
+                                        {% if student.gpa >= 3.5 %}
+                                            <span class="badge bg-success">{{ "%.2f"|format(student.gpa) }}</span>
+                                        {% elif student.gpa >= 3.0 %}
+                                            <span class="badge bg-primary">{{ "%.2f"|format(student.gpa) }}</span>
+                                        {% elif student.gpa >= 2.0 %}
+                                            <span class="badge bg-warning text-dark">{{ "%.2f"|format(student.gpa) }}</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">{{ "%.2f"|format(student.gpa) }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center">
+                                        <!--
+                                            ACTION BUTTONS:
+                                            Each button sends a request to a different Controller route.
+                                            The View doesn't know what happens — it just links to the URL.
+                                        -->
+                                        <a href="/edit/{{ student.id }}"
+                                           class="btn btn-sm btn-outline-primary me-1"
+                                           title="Edit Student">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a href="/delete/{{ student.id }}"
+                                           class="btn btn-sm btn-outline-danger"
+                                           title="Delete Student"
+                                           onclick="return confirm('Are you sure you want to delete {{ student.name }}?')">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

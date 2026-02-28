@@ -1,0 +1,78 @@
+/*
+ * VIEW LAYER — Custom Styles
+ * Bootstrap handles most styling via classes in the HTML.
+ * This file adds small visual enhancements.
+ */
+
+body {
+    background-color: #f4f6f9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* ── Dashboard Stat Cards ── */
+.stat-card {
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+}
+.stat-icon {
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 4px;
+}
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+.stat-label {
+    font-size: 0.8rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+/* ── Card Styling ── */
+.card {
+    border-radius: 12px;
+    overflow: hidden;
+}
+.card-header {
+    border-bottom: none;
+    padding: 14px 20px;
+    font-weight: 600;
+}
+
+/* ── Table ── */
+.table-hover tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+/* ── Form Focus States ── */
+.form-control:focus,
+.form-select:focus {
+    border-color: #343a40;
+    box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.15);
+}
+
+/* ── Buttons ── */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* ── Navbar ── */
+.navbar-brand {
+    font-size: 1.3rem;
+    letter-spacing: -0.3px;
+}
