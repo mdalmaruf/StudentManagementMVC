@@ -1,7 +1,4 @@
 # Python Flask MVC Web App Tutorial — Student Management System
-
-> **Duration:** ~1 hour  
-> **Level:** Beginner to Intermediate  
 > **Tools:** Python 3.8+, VS Code, Flask, Bootstrap 5  
 > **What you'll build:** A fully working Student Management web application using MVC architecture
 
@@ -1373,8 +1370,6 @@ def api_students():
 | 8 | `requirements.txt` | Config | 1 | Dependencies |
 | 9 | `.gitignore` | Config | ~15 | Git ignore rules |
 
-**Total: ~590 lines across 9 files**
 
 ---
 
-*Built as a teaching tutorial for MVC architecture with Python Flask and Bootstrap.*
